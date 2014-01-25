@@ -6,5 +6,5 @@
                  [clj-http "0.7.8"]
                  [environ "0.2.1"]
                  [ring/ring-codec "1.0.0"]]
-  :profiles {:dev {:dependencies [[midje "1.5.0"]]}})
+  :profiles {:dev {:dependencies [[midje "1.6.0"]]}})
 
