@@ -8,12 +8,32 @@
 (defn- decapitalize [string]
   (str/replace-first string #"^." str/lower-case))
 
+(defn- insert-hyphens [string]
+  (let [lower-case (str/lower-case string)
+        length (count string)]
+    (str 
+      \-
+      (if (< length 3)
+        lower-case
+        (let [last-character (subs lower-case (dec length))
+              all-but-last-character (subs lower-case 0 (dec length))]
+          (str all-but-last-character \- last-character))))))
+
 (defn- hyphenate [string]
-  (def any-capital-letters #"[A-Z]+")
-  (str/replace (str/replace string "_" "-") any-capital-letters #(str \- (str/lower-case %))))
+  (let [any-capitals #"[A-Z]+"]
+    (str/replace
+      (str/replace string "_" "-")
+      any-capitals
+      insert-hyphens)))
+
+(defn clojurify [string]
+  (hyphenate (decapitalize (remove-prefixes string))))
 
 (defn name->symbol [string]
-  (symbol (hyphenate (decapitalize (remove-prefixes string)))))
+  (symbol (clojurify string)))
+
+(defn name->ns [string]
+  (create-ns (symbol (str "steam." (clojurify string)))))
 
 (defn version-string [version]
     (format "v%04d" (or version 1)))
@@ -25,4 +45,3 @@
     (if (empty? query)
       (clojure.string/join "/" [host path])
       (clojure.string/join "/" [host path (str "?" query)]))))
-

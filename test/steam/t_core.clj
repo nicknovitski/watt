@@ -5,10 +5,9 @@
             [clj-http.client :as http]
             [clojure.data.json :as json]))
 
-
-(facts "`get`"
+(facts "`get-request`"
   (fact "returns the data at the specified endpoint"
-    (steam/get ...options...) => ..data..
+    (steam/get-request ...options...) => ..data..
   (provided
    (http/get (util/api-uri ...options...))
       => {:status 200, :body ...body...}
@@ -20,3 +19,17 @@
  (steam/profile->id ...name...) => ...id...
  (provided (http/get uri)
    => {:body (str "<profile><steamID64>" ...id... "</steamID64><otherTags></otherTags></profile>")}))
+
+(facts "`make-interface`"
+  (fact "creates a namespace from :name"
+    (steam/make-interface {:name ...name...}) => ...ns...
+    (provided
+      (util/name->ns ...name...) => ...ns...))
+  (fact "passes :name and the :methods sequence to `make-method`"
+    (steam/make-interface { :name ...name...
+                       :methods [...method-1... ...method-2...]}) => anything
+    (provided
+      (steam/make-method ...name... ...method-1...) => anything 
+      (steam/make-method ...name... ...method-2...) => anything)))
+
+(fact "`make-method` should exist")

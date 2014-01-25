@@ -2,17 +2,31 @@
   (:use [midje.sweet])
   (:require [steam.util :as u]))
 
-(tabular
- (fact "`name->symbol` turns camelcased strings into dash-separated symbols, dropping prefixes 'I', 'ISteam' and 'Get'"
-  (u/name->symbol ?string) => ?symbol)
- ?string           ?symbol
- "foo"             'foo
- "AbstractFactory" 'abstract-factory
- "Foo_420"         'foo-420
- "FooAPI"          'foo-api
- "IFoo"            'foo
- "ISteamFoo"       'foo
- "GetFoo"          'foo)
+(facts "`clojurify`"
+  (tabular
+    (fact "`clojurify` dash-separates camelcase strings"
+      (u/clojurify ?string) => ?formatted)
+        ?string           ?formatted
+        "foo"             "foo"
+        "AbstractFactory" "abstract-factory"
+        "Foo_420"         "foo-420"
+        "FooAPIUtil"      "foo-api-util"
+        "FooOAuth"        "foo-oauth")
+  (tabular
+    (fact "drops the prefixes 'I', 'ISteam' and 'Get'"
+      (u/clojurify ?string) => ?formatted)
+        ?string           ?formatted
+        "IFoo"            "foo"
+        "ISteamFoo"       "foo"
+        "GetFoo"          "foo"))
+
+(fact "`name->symbol creates a symbol"
+  (u/name->symbol ...string...) => ...symbol...
+  (provided (symbol (u/clojurify ...string...)) => ...symbol...))
+
+(fact "`name->ns` creates a namespace in the package"
+  (u/name->ns ...string...) => ...ns...
+  (provided (create-ns (symbol (str "steam." (u/clojurify ...string...)))) => ...ns...))
 
 (facts "`api-uri`"
   (fact "returns a full uri based on :interface, :method and :version"
