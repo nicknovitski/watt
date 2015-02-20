@@ -4,22 +4,22 @@
             [steam.web-api-util :as api])
   (:gen-class))
 
-(defn- remove-prefixes [string]
-  (string/replace-first string #"^(I(Steam)?|Get)" ""))
+(defn- remove-prefixes [s]
+  (string/replace-first s #"^(I(Steam)?|Get)" ""))
 
-(defn- remove-suffixes [string] (string/replace-first string #"Service$" ""))
+(defn- remove-suffixes [s] (string/replace-first s #"Service$" ""))
 
-(defn- decapitalize [string]
-  (string/replace-first string #"^." string/lower-case))
+(defn- decapitalize [s]
+  (string/replace-first s #"^." string/lower-case))
 
-(defn- words [string]
-  (map first (re-seq #"(([A-Z]([A-Z]+|[a-z]+)[0-9]?)|[0-9]+)(?![a-z])" string)))
+(defn- words [s]
+  (map first (re-seq #"(([A-Z]([A-Z]+|[a-z]+)[0-9]?)|[0-9]+)(?![a-z])" s)))
 
-(defn- hyphenate [string]
-  (string/join "-" (words string)))
+(defn- hyphenate [s]
+  (string/join "-" (words s)))
 
-(defn clojurify [string]
-  (-> string remove-prefixes remove-suffixes hyphenate .toLowerCase))
+(defn- clojurify [s]
+  (-> s remove-prefixes remove-suffixes hyphenate .toLowerCase))
 
 (defn- interface->ns [i]
   (list 'ns (symbol (str "steam." (clojurify (:name i))))
