@@ -1,22 +1,22 @@
 (ns steam.build
   (:require [clojure.pprint :refer [pprint]]
-            [clojure.string :as str]
+            [clojure.string :as string]
             [steam.web-api-util :as api])
   (:gen-class))
 
 (defn- remove-prefixes [string]
-  (str/replace-first string #"^(I(Steam)?|Get)" ""))
+  (string/replace-first string #"^(I(Steam)?|Get)" ""))
 
-(defn- remove-suffixes [string] (str/replace-first string #"Service$" ""))
+(defn- remove-suffixes [string] (string/replace-first string #"Service$" ""))
 
 (defn- decapitalize [string]
-  (str/replace-first string #"^." str/lower-case))
+  (string/replace-first string #"^." string/lower-case))
 
 (defn- words [string]
   (map first (re-seq #"(([A-Z]([A-Z]+|[a-z]+)[0-9]?)|[0-9]+)(?![a-z])" string)))
 
 (defn- hyphenate [string]
-  (str/join "-" (words string)))
+  (string/join "-" (words string)))
 
 (defn- clojurify [string]
   (-> string remove-prefixes remove-suffixes hyphenate .toLowerCase))
