@@ -18,7 +18,7 @@
 (defn- hyphenate [string]
   (string/join "-" (words string)))
 
-(defn- clojurify [string]
+(defn clojurify [string]
   (-> string remove-prefixes remove-suffixes hyphenate .toLowerCase))
 
 (defn- interface->ns [i]
@@ -28,6 +28,22 @@
 (defn- interface->path [i]
   (str "src/steam/" (clojurify (:name i)) ".clj"))
 
+(defn- interfaces []
+  (-> (api/supported-api-list) :body :apilist :interfaces))
+
+(defn get? [m] (= "GET" (:method m)))
+
+(defn method [i m]
+  (let [methname (-> m :name clojurify symbol)]
+    (list 'def methname
+       (list 'partial 'r/get (:name i) (:name m) (:version m)))))
+
 (defn -main []
-  (doseq [interface (-> (api/supported-api-list) :body :apilist :interfaces)]
-    (pprint (interface->ns interface))
+  (doseq [interface (interfaces)]
+    (spit
+      (interface->path interface)
+      (string/join
+        "\n"
+        (conj
+          (map (partial method interface) (filter get? (:methods interface)))
+          (interface->ns interface))))))
