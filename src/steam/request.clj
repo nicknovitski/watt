@@ -26,3 +26,6 @@
 
 (defn get [interface method version & {:as args}]
   (http/get (uri interface method version args) {:as :json}))
+
+(defn post [interface method version & {:as args}]
+  (http/post (uri interface method version args) {:as :json}))

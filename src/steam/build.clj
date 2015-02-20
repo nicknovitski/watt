@@ -25,18 +25,25 @@
   (list 'ns (symbol (str "steam." (clojurify (:name i))))
         '(:require [steam.request :as r])))
 
+(defn- underscore [s] (string/replace s #"-" "_"))
+
 (defn- interface->path [i]
-  (str "src/steam/" (clojurify (:name i)) ".clj"))
+  (str "src/steam/" (-> i :name clojurify underscore) ".clj"))
 
 (defn- interfaces []
   (-> (api/supported-api-list) :body :apilist :interfaces))
 
-(defn get? [m] (= "GET" (:method m)))
+(defn- method->requestfn [m]
+  (case (:httpmethod m)
+    "GET" 'r/get
+    "POST" 'r/post))
 
-(defn method [i m]
+(defn- method [i m]
   (let [methname (-> m :name clojurify symbol)]
     (list 'def methname
-       (list 'partial 'r/get (:name i) (:name m) (:version m)))))
+       (list 'partial (method->requestfn m) (:name i) (:name m) (:version m)))))
+
+(defn ppstr [f] (with-out-str (pprint f)))
 
 (defn -main []
   (doseq [interface (interfaces)]
@@ -44,6 +51,8 @@
       (interface->path interface)
       (string/join
         "\n"
-        (conj
-          (map (partial method interface) (filter get? (:methods interface)))
-          (interface->ns interface))))))
+        (map
+          ppstr
+          (conj
+            (map (partial method interface) (:methods interface))
+            (interface->ns interface)))))))

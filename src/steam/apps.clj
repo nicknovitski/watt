@@ -1,10 +1,11 @@
-(ns steam.apps
-  (:require [steam.request :as r]))
+(ns steam.apps (:require [steam.request :as r]))
 
-(def ^:private get (partial r/get "ISteamApps"))
+(def app-list (partial r/get "ISteamApps" "GetAppList" 1))
 
-(def app-list (partial get "GetAppList" 2))
+(def app-list (partial r/get "ISteamApps" "GetAppList" 2))
 
-(def servers-at-address (partial get "GetServersAtAddress" 1))
+(def
+ servers-at-address
+ (partial r/get "ISteamApps" "GetServersAtAddress" 1))
 
-(def up-to-date-check (partial get "UpToDateCheck" 1))
+(def up-to-date-check (partial r/get "ISteamApps" "UpToDateCheck" 1))
