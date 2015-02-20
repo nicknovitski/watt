@@ -18,23 +18,16 @@
 (defn- hyphenate [string]
   (str/join "-" (words string)))
 
-(defn name->symbol [string]
-  (-> string remove-prefixes remove-suffixes hyphenate .toLowerCase symbol))
+(defn- clojurify [string]
+  (-> string remove-prefixes remove-suffixes hyphenate .toLowerCase))
 
-(defn name->ns [string]
-  (list 'ns (symbol (str "steam." (name->symbol string)))
+(defn- interface->ns [i]
+  (list 'ns (symbol (str "steam." (clojurify (:name i))))
         '(:require [steam.request :as r])))
 
-(defn make-method [interface-name keywords])
-
-(defn make-interface [options]
-  (let [interface-name (:name options)
-        interface-ns (name->ns interface-name)
-        method-coll (:methods options)]
-    (doseq [method-props method-coll]
-      (make-method interface-name method-props))
-    interface-ns))
+(defn- interface->path [i]
+  (str "src/steam/" (clojurify (:name i)) ".clj"))
 
 (defn -main []
   (doseq [interface (-> (api/supported-api-list) :body :apilist :interfaces)]
-    (pprint (name->ns (:name interface)))))
+    (pprint (interface->ns interface))
