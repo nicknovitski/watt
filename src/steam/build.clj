@@ -1,4 +1,4 @@
-(ns steam.meta
+(ns steam.build
   (:require [clojure.string :as str]))
 
 (defn- remove-prefixes [string]
