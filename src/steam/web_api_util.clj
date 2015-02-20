@@ -1,5 +1,5 @@
 (ns steam.web-api-util
-  (:require [steam.api :as api]))
+  (:require [steam.core :as api]))
 
 (def ^:private get (partial api/get "ISteamWebAPIUtil"))
 

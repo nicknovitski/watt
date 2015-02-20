@@ -1,35 +1,12 @@
 (ns steam.util
-  (:require [clojure.string :as str]))
+  (:require [clj-http.client :as http]
+            [clojure.data.xml :as xml]))
 
-(defn- remove-prefixes [string]
-  (str/replace-first string #"^(I(Steam)?|Get)" ""))
+(defn- profile->xml-url [profile-name]
+  (str "http://steamcommunity.com/id/" profile-name "?xml=1"))
 
-(defn- decapitalize [string]
-  (str/replace-first string #"^." str/lower-case))
+(defn- content-of-first-tag [xml-string]
+  (-> xml-string xml/parse-str :content first :content first read-string))
 
-(defn- insert-hyphens [string]
-  (let [lower-case (str/lower-case string)
-        length (count string)]
-    (str 
-      \-
-      (if (< length 3)
-        lower-case
-        (let [last-character (subs lower-case (dec length))
-              all-but-last-character (subs lower-case 0 (dec length))]
-          (str all-but-last-character \- last-character))))))
-
-(defn- hyphenate [string]
-  (let [any-capitals #"[A-Z]+"]
-    (str/replace
-      (str/replace string "_" "-")
-      any-capitals
-      insert-hyphens)))
-
-(defn clojurify [string]
-  (hyphenate (decapitalize (remove-prefixes string))))
-
-(defn name->symbol [string]
-  (symbol (clojurify string)))
-
-(defn name->ns [string]
-  (create-ns (symbol (str "steam." (clojurify string)))))
+(defn profile->id [profile-name]
+  (content-of-first-tag (:body (http/get (profile->xml-url profile-name)))))

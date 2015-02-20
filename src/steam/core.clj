@@ -1,23 +1,28 @@
 (ns steam.core
-  (:require [clj-http.client :as http]
-            [clojure.data.xml :as xml]))
+  (:require [clojure.string :as str]
+            [clj-http.client :as http]
+            [ring.util.codec :as codec]))
 
-(defn- profile->xml-url [profile-name]
-  (str "http://steamcommunity.com/id/" profile-name "?xml=1"))
+(defn- version-string [version] (format "v%04d" version))
 
-(defn- content-of-first-tag [xml-string]
-  (-> xml-string xml/parse-str :content first :content first read-string))
+(defn- path [interface method version]
+  (clojure.string/join
+    "/"
+    [interface method (version-string version)]))
 
-(defn profile->id [profile-name]
-  (content-of-first-tag (:body (http/get (profile->xml-url profile-name)))))
+(defn form-encode [m]
+  (codec/form-encode (into {} (remove (comp nil? second) m))))
 
-(defn make-method [interface-name keywords])
+(defn- with-env-key [m]
+  (merge {:key (System/getenv "STEAM_API_KEY")} m))
 
-(defn make-interface [options]
-  (let [interface-name (:name options)
-        interface-ns (util/name->ns interface-name)
-        method-coll (:methods options)]
-    (doseq [method-props method-coll]
-      (make-method interface-name method-props))
-    interface-ns))
+(defn- uri [interface method version {:as q}]
+  (let [host "http://api.steampowered.com"]
+    (clojure.string/join
+      "/"
+      [host
+       (path interface method version)
+       (str "?" (form-encode (with-env-key q)))])))
 
+(defn get [interface method version & {:as args}]
+  (http/get (uri interface method version args) {:as :json}))

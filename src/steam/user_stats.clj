@@ -1,5 +1,5 @@
 (ns steam.user-stats
-  (:require [steam.api :as api]))
+  (:require [steam.core :as api]))
 
 (def ^:private get (partial api/get "ISteamUserStats"))
 
