@@ -4,6 +4,8 @@
 (defn- remove-prefixes [string]
   (str/replace-first string #"^(I(Steam)?|Get)" ""))
 
+(defn- remove-suffixes [string] (str/replace-first string #"Service$" ""))
+
 (defn- decapitalize [string]
   (str/replace-first string #"^." str/lower-case))
 
@@ -25,11 +27,8 @@
       any-capitals
       insert-hyphens)))
 
-(defn clojurify [string]
-  (hyphenate (decapitalize (remove-prefixes string))))
-
 (defn name->symbol [string]
-  (symbol (clojurify string)))
+  (-> string remove-prefixes remove-suffixes decapitalize hyphenate symbol))
 
 (defn name->ns [string]
   (list 'ns (symbol (str "steam." (name->symbol string)))
