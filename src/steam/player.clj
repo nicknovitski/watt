@@ -1,7 +1,7 @@
 (ns steam.player
-  (:require [steam.core :as api]))
+  (:require [steam.request :as r]))
 
-(def ^:private get (partial api/get "IPlayerService"))
+(def ^:private get (partial r/get "IPlayerService"))
 
 (def recently-played-games (partial get "GetRecentlyPlayedGames" 1))
 

@@ -1,7 +1,7 @@
 (ns steam.web-api-util
-  (:require [steam.core :as api]))
+  (:require [steam.request :as r]))
 
-(def ^:private get (partial api/get "ISteamWebAPIUtil"))
+(def ^:private get (partial r/get "ISteamWebAPIUtil"))
 
 (def supported-api-list (partial get "GetSupportedAPIList" 1))
 

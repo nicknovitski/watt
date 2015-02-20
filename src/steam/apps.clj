@@ -1,7 +1,7 @@
 (ns steam.apps
-  (:require [steam.core :as api]))
+  (:require [steam.request :as r]))
 
-(def ^:private get (partial api/get "ISteamApps"))
+(def ^:private get (partial r/get "ISteamApps"))
 
 (def app-list (partial get "GetAppList" 2))
 

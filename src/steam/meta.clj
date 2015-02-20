@@ -32,7 +32,7 @@
 
 (defn name->ns [string]
   (list 'ns (symbol (str "steam." (name->symbol string)))
-        '(:require [steam.core :as api])))
+        '(:require [steam.request :as r])))
 
 (defn make-method [interface-name keywords])
 

@@ -1,7 +1,7 @@
 (ns steam.user-stats
-  (:require [steam.core :as api]))
+  (:require [steam.request :as r]))
 
-(def ^:private get (partial api/get "ISteamUserStats"))
+(def ^:private get (partial r/get "ISteamUserStats"))
 
 (def global-achievement-percentages-for-app
   (partial get "GetGlobalAchievementPercentagesForApp" 2))
