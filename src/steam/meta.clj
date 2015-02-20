@@ -32,7 +32,8 @@
   (symbol (clojurify string)))
 
 (defn name->ns [string]
-  (create-ns (symbol (str "steam." (clojurify string)))))
+  (list 'ns (symbol (str "steam." (name->symbol string)))
+        '(:require [steam.core :as api])))
 
 (defn make-method [interface-name keywords])
 
