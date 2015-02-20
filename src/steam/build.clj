@@ -1,5 +1,8 @@
 (ns steam.build
-  (:require [clojure.string :as str]))
+  (:require [clojure.pprint :refer [pprint]]
+            [clojure.string :as str]
+            [steam.web-api-util :as api])
+  (:gen-class))
 
 (defn- remove-prefixes [string]
   (str/replace-first string #"^(I(Steam)?|Get)" ""))
@@ -31,3 +34,7 @@
     (doseq [method-props method-coll]
       (make-method interface-name method-props))
     interface-ns))
+
+(defn -main []
+  (doseq [interface (-> (api/supported-api-list) :body :apilist :interfaces)]
+    (pprint (name->ns (:name interface)))))
