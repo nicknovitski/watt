@@ -19,7 +19,7 @@
   (string/join "-" (words s)))
 
 (defn- clojurify [s]
-  (-> s remove-prefixes remove-suffixes hyphenate .toLowerCase))
+  (-> s remove-prefixes remove-suffixes hyphenate string/lower-case))
 
 (defn- interface->ns [i]
   (list 'ns (symbol (str "steam." (clojurify (:name i))))
