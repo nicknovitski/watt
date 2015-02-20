@@ -1,0 +1,2 @@
+#! /usr/bin/bash
+git grep -l '(?:^\s+".+)\\n(?:.+"$)' src | xargs sed -i 's/\\n/\n/g'

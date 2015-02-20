@@ -4,4 +4,6 @@
 
 (def
  supported-api-list
+ "Parameters:
+(string) :key - access key (optional)"
  (partial r/get "ISteamWebAPIUtil" "GetSupportedAPIList" 1))

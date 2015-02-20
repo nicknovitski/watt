@@ -2,6 +2,13 @@
 
 (def
  report-account-recovery-data
+ "Send account recovery data
+
+Parameters:
+(string) :loginuser_list
+(string) :install_config
+(string) :shasentryfile
+(string) :machineid"
  (partial
   r/post
   "IAccountRecoveryService"
@@ -10,6 +17,10 @@
 
 (def
  retrieve-account-recovery-data
+ "Send account recovery data
+
+Parameters:
+(string) :requesthandle"
  (partial
   r/post
   "IAccountRecoveryService"

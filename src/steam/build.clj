@@ -38,12 +38,42 @@
     "GET" 'r/get
     "POST" 'r/post))
 
-(defn- method [i m]
-  (let [methname (-> m :name clojurify symbol)]
-    (list 'def methname
-       (list 'partial (method->requestfn m) (:name i) (:name m) (:version m)))))
+(defn- param->s [p]
+  (str
+    "("
+    (:type p)
+    ") "
+    (keyword (:name p))
+    (if-not (empty? (:description p)) (str " - " (:description p)))
+    (if (:optional p) " (optional)")))
 
-(defn ppstr [f] (with-out-str (pprint f)))
+(defn- ppstr [f] (with-out-str (pprint f)))
+
+(defn params->s [ps]
+  (string/join
+    "\n"
+    (conj
+      (map param->s ps)
+      "Parameters:")))
+
+(defn- docstring [m]
+  (if (empty? (:parameters m))
+    (:description m)
+    (if (empty? (:description m))
+      (params->s (:parameters m))
+      (string/join
+        "\n\n"
+        [(:description m) (params->s (:parameters m))]))))
+
+(defn- method [i m]
+  (let [methname (-> m :name clojurify symbol)
+        body (list 'partial (method->requestfn m) (:name i) (:name m) (:version m))]
+    (if-let [ds (docstring m)]
+      (list 'def methname ds body)
+      (list 'def methname body))))
+
+(defn- interface->methods [i]
+  (map (partial method i) (:methods i)))
 
 (defn -main []
   (doseq [interface (interfaces)]
@@ -54,5 +84,5 @@
         (map
           ppstr
           (conj
-            (map (partial method interface) (:methods interface))
+            (interface->methods interface)
             (interface->ns interface)))))))

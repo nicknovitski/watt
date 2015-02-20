@@ -2,4 +2,6 @@
 
 (def
  player-items
+ "Parameters:
+(uint64) :steamid - The Steam ID to fetch items for"
  (partial r/get "IEconItems_238460" "GetPlayerItems" 1))
