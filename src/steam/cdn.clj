@@ -1,7 +1,7 @@
 (ns steam.cdn (:require [steam.request :as r]))
 
 (def
- set-client-filters
+ set-client-filters-v1
  "Parameters:
 (string) :key - access key
 (string) :cdnname - Steam name of CDN property
@@ -9,3 +9,5 @@
 (string) :allowedasns - comma-separated list of allowed client network AS numbers - blank for not used (optional)
 (string) :allowedipcountries - comma-separated list of allowed client IP country codes in ISO 3166-1 format - blank for not used (optional)"
  (partial r/post "ISteamCDN" "SetClientFilters" 1))
+
+(def set-client-filters set-client-filters-v1)

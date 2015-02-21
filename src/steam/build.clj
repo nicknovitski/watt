@@ -65,15 +65,26 @@
         "\n\n"
         [(:description m) (params->s (:parameters m))]))))
 
-(defn- method [i m]
-  (let [methname (-> m :name clojurify symbol)
-        body (list 'partial (method->requestfn m) (:name i) (:name m) (:version m))]
+(defn- method-name [m]
+  (symbol (str (-> m :name clojurify) "-v" (:version m))))
+
+(defn- method->def [i m]
+  (let [body (list 'partial (method->requestfn m) (:name i) (:name m) (:version m))]
     (if-let [ds (docstring m)]
-      (list 'def methname ds body)
-      (list 'def methname body))))
+      (list 'def (method-name m) ds body)
+      (list 'def (method-name m) body))))
+
+(defn- highest-version [mcoll]
+  (apply (partial max-key :version) mcoll))
 
 (defn- interface->methods [i]
-  (map (partial method i) (:methods i)))
+  (mapcat
+    (fn [method-group]
+      (let [vmax (highest-version method-group)]
+        (concat
+          (map (partial method->def i) method-group)
+          [(list 'def (-> vmax :name clojurify symbol) (method-name vmax))])))
+    (partition-by :name (:methods i))))
 
 (defn -main []
   (doseq [interface (interfaces)]

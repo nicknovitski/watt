@@ -1,7 +1,7 @@
 (ns steam.published-file (:require [steam.request :as r]))
 
 (def
- query-files
+ query-files-v1
  "Performs a search query for published files
 
 Parameters:
@@ -31,3 +31,5 @@ Parameters:
 (bool) :return_short_description - Populate the short_description field instead of file_description
 (bool) :return_for_sale_data - Return pricing information, if applicable"
  (partial r/get "IPublishedFileService" "QueryFiles" 1))
+
+(def query-files query-files-v1)

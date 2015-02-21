@@ -1,7 +1,7 @@
 (ns steam.cheat-reporting (:require [steam.request :as r]))
 
 (def
- report-cheat-data
+ report-cheat-data-v1
  "Reports cheat data. Only use on test account that is running the game but not in a multiplayer session.
 
 Parameters:
@@ -17,3 +17,5 @@ Parameters:
 (uint32) :game_process_id - process ID of the running game.
 (uint32) :cheat_process_id - process ID of the cheat process that ran"
  (partial r/post "ICheatReportingService" "ReportCheatData" 1))
+
+(def report-cheat-data report-cheat-data-v1)
