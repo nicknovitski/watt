@@ -9,7 +9,7 @@
 (def
  supported-api-list-v1
  "Parameters:
-(string) :key - access key (optional)"
+:key (string) - access key (optional)"
  (partial r/get "ISteamWebAPIUtil" "GetSupportedAPIList" 1))
 
 (def supported-api-list supported-api-list-v1)

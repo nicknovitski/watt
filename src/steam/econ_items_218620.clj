@@ -3,7 +3,7 @@
 (def
  player-items-v1
  "Parameters:
-(uint64) :steamid - The Steam ID to fetch items for"
+:steamid (uint64) - The Steam ID to fetch items for"
  (partial r/get "IEconItems_218620" "GetPlayerItems" 1))
 
 (def player-items player-items-v1)

@@ -3,8 +3,8 @@
 (def
  item-id-v1
  "Parameters:
-(uint64) :steamid - The Steam ID to fetch items for
-(uint32) :promoid - The promo ID to grant an item for"
+:steamid (uint64) - The Steam ID to fetch items for
+:promoid (uint32) - The promo ID to grant an item for"
  (partial r/get "ITFPromos_570" "GetItemID" 1))
 
 (def item-id item-id-v1)
@@ -12,8 +12,8 @@
 (def
  grant-item-v1
  "Parameters:
-(uint64) :steamid - The Steam ID to fetch items for
-(uint32) :promoid - The promo ID to grant an item for"
+:steamid (uint64) - The Steam ID to fetch items for
+:promoid (uint32) - The promo ID to grant an item for"
  (partial r/post "ITFPromos_570" "GrantItem" 1))
 
 (def grant-item grant-item-v1)

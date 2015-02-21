@@ -40,10 +40,10 @@
 
 (defn- param->s [p]
   (str
-    "("
-    (:type p)
-    ") "
     (keyword (:name p))
+    " ("
+    (:type p)
+    ")"
     (if-not (empty? (:description p)) (str " - " (:description p)))
     (if (:optional p) " (optional)")))
 

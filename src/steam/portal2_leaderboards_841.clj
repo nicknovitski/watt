@@ -3,7 +3,7 @@
 (def
  bucketized-data-v1
  "Parameters:
-(string) :leaderboardName - The leaderboard name to fetch data for."
+:leaderboardName (string) - The leaderboard name to fetch data for."
  (partial r/get "IPortal2Leaderboards_841" "GetBucketizedData" 1))
 
 (def bucketized-data bucketized-data-v1)

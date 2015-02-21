@@ -3,13 +3,13 @@
 (def
  poll-status-v1
  "Parameters:
-(string) :steamid - Steam ID of the user
-(uint64) :umqid - UMQ Session ID
-(uint32) :message - Message that was last known to the user
-(uint32) :pollid - Caller-specific poll id (optional)
-(uint32) :sectimeout - Long-poll timeout in seconds (optional)
-(uint32) :secidletime - How many seconds is client considering itself idle, e.g. screen is off (optional)
-(uint32) :use_accountids - Boolean, 0 (default): return steamid_from in output, 1: return accountid_from (optional)"
+:steamid (string) - Steam ID of the user
+:umqid (uint64) - UMQ Session ID
+:message (uint32) - Message that was last known to the user
+:pollid (uint32) - Caller-specific poll id (optional)
+:sectimeout (uint32) - Long-poll timeout in seconds (optional)
+:secidletime (uint32) - How many seconds is client considering itself idle, e.g. screen is off (optional)
+:use_accountids (uint32) - Boolean, 0 (default): return steamid_from in output, 1: return accountid_from (optional)"
  (partial r/post "ISteamWebUserPresenceOAuth" "PollStatus" 1))
 
 (def poll-status poll-status-v1)

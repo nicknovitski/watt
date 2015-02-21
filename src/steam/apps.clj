@@ -9,7 +9,7 @@
 (def
  servers-at-address-v1
  "Parameters:
-(string) :addr - IP or IP:queryport to list"
+:addr (string) - IP or IP:queryport to list"
  (partial r/get "ISteamApps" "GetServersAtAddress" 1))
 
 (def servers-at-address servers-at-address-v1)
@@ -17,8 +17,8 @@
 (def
  up-to-date-check-v1
  "Parameters:
-(uint32) :appid - AppID of game
-(uint32) :version - The installed version of the game"
+:appid (uint32) - AppID of game
+:version (uint32) - The installed version of the game"
  (partial r/get "ISteamApps" "UpToDateCheck" 1))
 
 (def up-to-date-check up-to-date-check-v1)

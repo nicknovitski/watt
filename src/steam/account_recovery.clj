@@ -5,10 +5,10 @@
  "Send account recovery data
 
 Parameters:
-(string) :loginuser_list
-(string) :install_config
-(string) :shasentryfile
-(string) :machineid"
+:loginuser_list (string)
+:install_config (string)
+:shasentryfile (string)
+:machineid (string)"
  (partial
   r/post
   "IAccountRecoveryService"
@@ -22,7 +22,7 @@ Parameters:
  "Send account recovery data
 
 Parameters:
-(string) :requesthandle"
+:requesthandle (string)"
  (partial
   r/post
   "IAccountRecoveryService"

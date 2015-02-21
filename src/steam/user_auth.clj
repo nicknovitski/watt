@@ -3,7 +3,7 @@
 (def
  token-details-v1
  "Parameters:
-(string) :access_token - OAuth2 token for which to return details"
+:access_token (string) - OAuth2 token for which to return details"
  (partial r/get "ISteamUserOAuth" "GetTokenDetails" 1))
 
 (def token-details token-details-v1)
