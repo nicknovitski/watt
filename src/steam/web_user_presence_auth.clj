@@ -1,4 +1,6 @@
-(ns steam.web-user-presence-auth (:require [steam.request :as r]))
+(ns
+ steam.web-user-presence-auth
+ (:require [steam.core :refer [request]]))
 
 (def
  poll-status-v1
@@ -10,6 +12,6 @@
 :sectimeout (uint32) - Long-poll timeout in seconds (optional)
 :secidletime (uint32) - How many seconds is client considering itself idle, e.g. screen is off (optional)
 :use_accountids (uint32) - Boolean, 0 (default): return steamid_from in output, 1: return accountid_from (optional)"
- (partial r/post "ISteamWebUserPresenceOAuth" "PollStatus" 1))
+ (partial request "POST" "ISteamWebUserPresenceOAuth" "PollStatus" 1))
 
 (def poll-status poll-status-v1)

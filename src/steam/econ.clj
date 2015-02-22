@@ -1,4 +1,4 @@
-(ns steam.econ (:require [steam.request :as r]))
+(ns steam.econ (:require [steam.core :refer [request]]))
 
 (def
  trade-offers-v1
@@ -13,7 +13,7 @@ Parameters:
 :active_only (bool) - Indicates we should only return offers which are still active, or offers that have changed in state since the time_historical_cutoff
 :historical_only (bool) - Indicates we should only return offers which are not active.
 :time_historical_cutoff (uint32) - When active_only is set, offers updated since this time will also be returned"
- (partial r/get "IEconService" "GetTradeOffers" 1))
+ (partial request "GET" "IEconService" "GetTradeOffers" 1))
 
 (def trade-offers trade-offers-v1)
 
@@ -25,7 +25,7 @@ Parameters:
 :key (string) - Access key
 :tradeofferid (uint64)
 :language (string)"
- (partial r/get "IEconService" "GetTradeOffer" 1))
+ (partial request "GET" "IEconService" "GetTradeOffer" 1))
 
 (def trade-offer trade-offer-v1)
 
@@ -36,7 +36,7 @@ Parameters:
 Parameters:
 :key (string) - Access key
 :time_last_visit (uint32) - The time the user last visited.  If not passed, will use the time the user last visited the trade offer page."
- (partial r/get "IEconService" "GetTradeOffersSummary" 1))
+ (partial request "GET" "IEconService" "GetTradeOffersSummary" 1))
 
 (def trade-offers-summary trade-offers-summary-v1)
 
@@ -47,7 +47,7 @@ Parameters:
 Parameters:
 :key (string) - Access key
 :tradeofferid (uint64)"
- (partial r/post "IEconService" "DeclineTradeOffer" 1))
+ (partial request "POST" "IEconService" "DeclineTradeOffer" 1))
 
 (def decline-trade-offer decline-trade-offer-v1)
 
@@ -58,6 +58,6 @@ Parameters:
 Parameters:
 :key (string) - Access key
 :tradeofferid (uint64)"
- (partial r/post "IEconService" "CancelTradeOffer" 1))
+ (partial request "POST" "IEconService" "CancelTradeOffer" 1))
 
 (def cancel-trade-offer cancel-trade-offer-v1)

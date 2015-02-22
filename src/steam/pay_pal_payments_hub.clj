@@ -1,9 +1,10 @@
-(ns steam.pay-pal-payments-hub (:require [steam.request :as r]))
+(ns steam.pay-pal-payments-hub (:require [steam.core :refer [request]]))
 
 (def
  pay-pal-payments-hub-payment-notification-v1
  (partial
-  r/post
+  request
+  "POST"
   "ISteamPayPalPaymentsHub"
   "PayPalPaymentsHubPaymentNotification"
   1))

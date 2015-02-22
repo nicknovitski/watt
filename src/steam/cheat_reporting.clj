@@ -1,4 +1,4 @@
-(ns steam.cheat-reporting (:require [steam.request :as r]))
+(ns steam.cheat-reporting (:require [steam.core :refer [request]]))
 
 (def
  report-cheat-data-v1
@@ -16,6 +16,6 @@ Parameters:
 :cheatname (string) - descriptive name for the cheat.
 :game_process_id (uint32) - process ID of the running game.
 :cheat_process_id (uint32) - process ID of the cheat process that ran"
- (partial r/post "ICheatReportingService" "ReportCheatData" 1))
+ (partial request "POST" "ICheatReportingService" "ReportCheatData" 1))
 
 (def report-cheat-data report-cheat-data-v1)

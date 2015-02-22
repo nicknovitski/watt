@@ -1,4 +1,4 @@
-(ns steam.published-file (:require [steam.request :as r]))
+(ns steam.published-file (:require [steam.core :refer [request]]))
 
 (def
  query-files-v1
@@ -30,6 +30,6 @@ Parameters:
 :return_children (bool) - Return child item ids in the file details
 :return_short_description (bool) - Populate the short_description field instead of file_description
 :return_for_sale_data (bool) - Return pricing information, if applicable"
- (partial r/get "IPublishedFileService" "QueryFiles" 1))
+ (partial request "GET" "IPublishedFileService" "QueryFiles" 1))
 
 (def query-files query-files-v1)

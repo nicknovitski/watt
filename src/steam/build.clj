@@ -23,7 +23,7 @@
 
 (defn- interface->ns [i]
   (list 'ns (symbol (str "steam." (clojurify (:name i))))
-        '(:require [steam.request :as r])))
+        '(:require [steam.core :refer [request]])))
 
 (defn- underscore [s] (string/replace s #"-" "_"))
 
@@ -35,11 +35,6 @@
     (json/read-str (slurp "resources/apilist.json") :key-fn keyword)
     :apilist
     :interfaces))
-
-(defn- method->requestfn [m]
-  (case (:httpmethod m)
-    "GET" 'r/get
-    "POST" 'r/post))
 
 (defn- param->s [p]
   (str
@@ -72,7 +67,7 @@
   (symbol (str (-> m :name clojurify) "-v" (:version m))))
 
 (defn- method->def [i m]
-  (let [body (list 'partial (method->requestfn m) (:name i) (:name m) (:version m))]
+  (let [body (list 'partial 'request (:httpmethod m) (:name i) (:name m) (:version m))]
     (if-let [ds (docstring m)]
       (list 'def (method-name m) ds body)
       (list 'def (method-name m) body))))

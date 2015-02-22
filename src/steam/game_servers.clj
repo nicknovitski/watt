@@ -1,4 +1,4 @@
-(ns steam.game-servers (:require [steam.request :as r]))
+(ns steam.game-servers (:require [steam.core :refer [request]]))
 
 (def
  account-list-v1
@@ -6,7 +6,7 @@
 
 Parameters:
 :key (string) - Access key"
- (partial r/get "IGameServersService" "GetAccountList" 1))
+ (partial request "GET" "IGameServersService" "GetAccountList" 1))
 
 (def account-list account-list-v1)
 
@@ -18,7 +18,7 @@ Parameters:
 :key (string) - Access key
 :appid (uint32) - The app to use the account for
 :memo (string) - The memo to set on the new account"
- (partial r/post "IGameServersService" "CreateAccount" 1))
+ (partial request "POST" "IGameServersService" "CreateAccount" 1))
 
 (def create-account create-account-v1)
 
@@ -30,7 +30,7 @@ Parameters:
 :key (string) - Access key
 :steamid (uint64) - The SteamID of the game server to set the memo on
 :memo (string) - The memo to set on the new account"
- (partial r/post "IGameServersService" "SetMemo" 1))
+ (partial request "POST" "IGameServersService" "SetMemo" 1))
 
 (def set-memo set-memo-v1)
 
@@ -41,7 +41,7 @@ Parameters:
 Parameters:
 :key (string) - Access key
 :steamid (uint64) - The SteamID of the game server to reset the login token of"
- (partial r/post "IGameServersService" "ResetLoginToken" 1))
+ (partial request "POST" "IGameServersService" "ResetLoginToken" 1))
 
 (def reset-login-token reset-login-token-v1)
 
@@ -52,7 +52,7 @@ Parameters:
 Parameters:
 :key (string) - Access key
 :steamid (uint64) - The SteamID of the game server to get info on"
- (partial r/get "IGameServersService" "GetAccountPublicInfo" 1))
+ (partial request "GET" "IGameServersService" "GetAccountPublicInfo" 1))
 
 (def account-public-info account-public-info-v1)
 
@@ -63,7 +63,12 @@ Parameters:
 Parameters:
 :key (string) - Access key
 :server_ips (string)"
- (partial r/get "IGameServersService" "GetServerSteamIDsByIP" 1))
+ (partial
+  request
+  "GET"
+  "IGameServersService"
+  "GetServerSteamIDsByIP"
+  1))
 
 (def server-steam-ds-by-ip server-steam-ds-by-ip-v1)
 
@@ -74,6 +79,11 @@ Parameters:
 Parameters:
 :key (string) - Access key
 :server_steamids (uint64)"
- (partial r/get "IGameServersService" "GetServerIPsBySteamID" 1))
+ (partial
+  request
+  "GET"
+  "IGameServersService"
+  "GetServerIPsBySteamID"
+  1))
 
 (def server-ps-by-steam-id server-ps-by-steam-id-v1)

@@ -1,4 +1,4 @@
-(ns steam.account-recovery (:require [steam.request :as r]))
+(ns steam.account-recovery (:require [steam.core :refer [request]]))
 
 (def
  report-account-recovery-data-v1
@@ -10,7 +10,8 @@ Parameters:
 :shasentryfile (string)
 :machineid (string)"
  (partial
-  r/post
+  request
+  "POST"
   "IAccountRecoveryService"
   "ReportAccountRecoveryData"
   1))
@@ -24,7 +25,8 @@ Parameters:
 Parameters:
 :requesthandle (string)"
  (partial
-  r/post
+  request
+  "POST"
   "IAccountRecoveryService"
   "RetrieveAccountRecoveryData"
   1))

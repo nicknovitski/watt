@@ -1,8 +1,8 @@
-(ns steam.web-api-util (:require [steam.request :as r]))
+(ns steam.web-api-util (:require [steam.core :refer [request]]))
 
 (def
  server-info-v1
- (partial r/get "ISteamWebAPIUtil" "GetServerInfo" 1))
+ (partial request "GET" "ISteamWebAPIUtil" "GetServerInfo" 1))
 
 (def server-info server-info-v1)
 
@@ -10,6 +10,6 @@
  supported-api-list-v1
  "Parameters:
 :key (string) - access key (optional)"
- (partial r/get "ISteamWebAPIUtil" "GetSupportedAPIList" 1))
+ (partial request "GET" "ISteamWebAPIUtil" "GetSupportedAPIList" 1))
 
 (def supported-api-list supported-api-list-v1)

@@ -1,4 +1,4 @@
-(ns steam.player (:require [steam.request :as r]))
+(ns steam.player (:require [steam.core :refer [request]]))
 
 (def
  recently-played-games-v1
@@ -8,7 +8,7 @@ Parameters:
 :key (string) - Access key
 :steamid (uint64) - The player we're asking about
 :count (uint32) - The number of games to return (0/unset: all)"
- (partial r/get "IPlayerService" "GetRecentlyPlayedGames" 1))
+ (partial request "GET" "IPlayerService" "GetRecentlyPlayedGames" 1))
 
 (def recently-played-games recently-played-games-v1)
 
@@ -22,7 +22,7 @@ Parameters:
 :include_appinfo (bool) - true if we want additional details (name, icon) about each game
 :include_played_free_games (bool) - Free games are excluded by default.  If this is set, free games the user has played will be returned.
 :appids_filter (uint32) - if set, restricts result set to the passed in apps"
- (partial r/get "IPlayerService" "GetOwnedGames" 1))
+ (partial request "GET" "IPlayerService" "GetOwnedGames" 1))
 
 (def owned-games owned-games-v1)
 
@@ -33,7 +33,7 @@ Parameters:
 Parameters:
 :key (string) - Access key
 :steamid (uint64) - The player we're asking about"
- (partial r/get "IPlayerService" "GetSteamLevel" 1))
+ (partial request "GET" "IPlayerService" "GetSteamLevel" 1))
 
 (def steam-level steam-level-v1)
 
@@ -44,7 +44,7 @@ Parameters:
 Parameters:
 :key (string) - Access key
 :steamid (uint64) - The player we're asking about"
- (partial r/get "IPlayerService" "GetBadges" 1))
+ (partial request "GET" "IPlayerService" "GetBadges" 1))
 
 (def badges badges-v1)
 
@@ -56,7 +56,7 @@ Parameters:
 :key (string) - Access key
 :steamid (uint64) - The player we're asking about
 :badgeid (int32) - The badge we're asking about"
- (partial r/get "IPlayerService" "GetCommunityBadgeProgress" 1))
+ (partial request "GET" "IPlayerService" "GetCommunityBadgeProgress" 1))
 
 (def community-badge-progress community-badge-progress-v1)
 
@@ -68,6 +68,6 @@ Parameters:
 :key (string) - Access key
 :steamid (uint64) - The player we're asking about
 :appid_playing (uint32) - The game player is currently playing"
- (partial r/get "IPlayerService" "IsPlayingSharedGame" 1))
+ (partial request "GET" "IPlayerService" "IsPlayingSharedGame" 1))
 
 (def playing-shared-game playing-shared-game-v1)
