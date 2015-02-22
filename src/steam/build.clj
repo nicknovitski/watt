@@ -1,7 +1,7 @@
 (ns steam.build
   (:require [clojure.pprint :refer [pprint]]
             [clojure.string :as string]
-            [steam.web-api-util :as api])
+            [clojure.data.json :as json])
   (:gen-class))
 
 (defn- remove-prefixes [s]
@@ -31,7 +31,10 @@
   (str "src/steam/" (-> i :name clojurify underscore) ".clj"))
 
 (defn- interfaces []
-  (-> (api/supported-api-list) :body :apilist :interfaces))
+  (->
+    (json/read-str (slurp "resources/apilist.json") :key-fn keyword)
+    :apilist
+    :interfaces))
 
 (defn- method->requestfn [m]
   (case (:httpmethod m)

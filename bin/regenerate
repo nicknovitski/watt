@@ -1,3 +1,0 @@
-#! /usr/bin/bash
-lein run && \
-  git grep -l '(?:^\s+".+)\\n(?:.+"$)' src | xargs sed -i 's/\\n/\n/g'
