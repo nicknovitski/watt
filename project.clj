@@ -3,6 +3,5 @@
   :dependencies [[org.clojure/data.json "0.2.5"]
                  [clj-http "1.0.1"]
                  [ring/ring-codec "1.0.0"]]
-  :profiles {:dev {:dependencies [[org.clojure/clojure "1.6.0"]
-                                  [midje "1.6.0"]]}}
+  :profiles {:dev {:dependencies [[org.clojure/clojure "1.6.0"]]}}
   :main ^:skip-aot steam.build)
