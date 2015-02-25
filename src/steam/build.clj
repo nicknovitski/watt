@@ -21,13 +21,13 @@
 (defn- clojurify [s]
   (-> s remove-prefixes remove-suffixes hyphenate string/lower-case))
 
-(defn- interface->ns [i]
+(defn interface->ns [i]
   (list 'ns (symbol (str "steam." (clojurify (:name i))))
         '(:require [steam.core :refer [request]])))
 
 (defn- underscore [s] (string/replace s #"-" "_"))
 
-(defn- interface->path [i]
+(defn interface->path [i]
   (str "src/steam/" (-> i :name clojurify underscore) ".clj"))
 
 (defn- interfaces []
@@ -73,7 +73,7 @@
 (defn- highest-version [mcoll]
   (apply (partial max-key :version) mcoll))
 
-(defn- interface->methods [i]
+(defn interface->methods [i]
   (mapcat
     (fn [method-group]
       (let [vmax (highest-version method-group)]
