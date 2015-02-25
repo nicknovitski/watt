@@ -45,8 +45,6 @@
     (if-not (empty? (:description p)) (str " - " (:description p)))
     (if (:optional p) " (optional)")))
 
-(defn- ppstr [f] (with-out-str (pprint f)))
-
 (defn params->s [ps]
   (string/join
     "\n"
@@ -84,6 +82,8 @@
           [(list 'def (-> vmax :name clojurify symbol) (method-name vmax))])))
     (partition-by :name (:methods i))))
 
+(defn- pprint-str [f] (with-out-str (pprint f)))
+
 (defn -main []
   (doseq [interface (interfaces)]
     (spit
@@ -91,7 +91,7 @@
       (string/join
         "\n"
         (map
-          ppstr
+          pprint-str
           (conj
             (interface->methods interface)
             (interface->ns interface)))))))
