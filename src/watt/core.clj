@@ -27,4 +27,6 @@
 (defn- method->fn [m] (case m "GET" http/get "POST" http/post))
 
 (defn request [httpmethod i m v & {:as args}]
-  ((method->fn httpmethod) (uri i m v args) {:as :json}))
+  (http/request {:method (keyword (string/lower-case httpmethod))
+                 :url (uri i m v args)
+                 :as :json}))
