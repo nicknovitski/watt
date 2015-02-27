@@ -1,12 +1,12 @@
 (ns watt.core
-  (:require [clojure.string :as str]
+  (:require [clojure.string :as string]
             [clj-http.client :as http]
             [ring.util.codec :as codec]))
 
 (defn- version-string [version] (format "v%04d" version))
 
 (defn- path [interface method version]
-  (clojure.string/join
+  (string/join
     "/"
     [interface method (version-string version)]))
 
@@ -18,7 +18,7 @@
 
 (defn- uri [interface method version {:as q}]
   (let [host "http://api.steampowered.com"]
-    (clojure.string/join
+    (string/join
       "/"
       [host
        (path interface method version)
