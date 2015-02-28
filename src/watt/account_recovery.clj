@@ -1,34 +1,30 @@
-(ns watt.account-recovery (:require [watt.core :refer [request]]))
+(ns watt.account-recovery (:require [watt.core :refer [method->fn]]))
 
 (def
  report-account-recovery-data-v1
- "Send account recovery data
-
-Parameters:
-:loginuser_list (string)
-:install_config (string)
-:shasentryfile (string)
-:machineid (string)"
- (partial
-  request
-  "POST"
+ (method->fn
   "IAccountRecoveryService"
-  "ReportAccountRecoveryData"
-  1))
+  {:name "ReportAccountRecoveryData",
+   :version 1,
+   :httpmethod "POST",
+   :description "Send account recovery data",
+   :parameters
+   [{:name "loginuser_list", :type "string", :optional false}
+    {:name "install_config", :type "string", :optional false}
+    {:name "shasentryfile", :type "string", :optional false}
+    {:name "machineid", :type "string", :optional false}]}))
 
 (def report-account-recovery-data report-account-recovery-data-v1)
 
 (def
  retrieve-account-recovery-data-v1
- "Send account recovery data
-
-Parameters:
-:requesthandle (string)"
- (partial
-  request
-  "POST"
+ (method->fn
   "IAccountRecoveryService"
-  "RetrieveAccountRecoveryData"
-  1))
+  {:name "RetrieveAccountRecoveryData",
+   :version 1,
+   :httpmethod "POST",
+   :description "Send account recovery data",
+   :parameters
+   [{:name "requesthandle", :type "string", :optional false}]}))
 
 (def retrieve-account-recovery-data retrieve-account-recovery-data-v1)

@@ -1,39 +1,63 @@
-(ns watt.remote-storage (:require [watt.core :refer [request]]))
+(ns watt.remote-storage (:require [watt.core :refer [method->fn]]))
 
 (def
  collection-details-v1
- "Parameters:
-:collectioncount (uint32) - Number of collections being requested
-:publishedfileids[0] (uint64) - collection ids to get the details for"
- (partial
-  request
-  "POST"
+ (method->fn
   "ISteamRemoteStorage"
-  "GetCollectionDetails"
-  1))
+  {:name "GetCollectionDetails",
+   :version 1,
+   :httpmethod "POST",
+   :parameters
+   [{:name "collectioncount",
+     :type "uint32",
+     :optional false,
+     :description "Number of collections being requested"}
+    {:name "publishedfileids[0]",
+     :type "uint64",
+     :optional false,
+     :description "collection ids to get the details for"}]}))
 
 (def collection-details collection-details-v1)
 
 (def
  published-file-details-v1
- "Parameters:
-:itemcount (uint32) - Number of items being requested
-:publishedfileids[0] (uint64) - published file id to look up"
- (partial
-  request
-  "POST"
+ (method->fn
   "ISteamRemoteStorage"
-  "GetPublishedFileDetails"
-  1))
+  {:name "GetPublishedFileDetails",
+   :version 1,
+   :httpmethod "POST",
+   :parameters
+   [{:name "itemcount",
+     :type "uint32",
+     :optional false,
+     :description "Number of items being requested"}
+    {:name "publishedfileids[0]",
+     :type "uint64",
+     :optional false,
+     :description "published file id to look up"}]}))
 
 (def published-file-details published-file-details-v1)
 
 (def
  ugc-file-details-v1
- "Parameters:
-:steamid (uint64) - If specified, only returns details if the file is owned by the SteamID specified (optional)
-:ugcid (uint64) - ID of UGC file to get info for
-:appid (uint32) - appID of product"
- (partial request "GET" "ISteamRemoteStorage" "GetUGCFileDetails" 1))
+ (method->fn
+  "ISteamRemoteStorage"
+  {:name "GetUGCFileDetails",
+   :version 1,
+   :httpmethod "GET",
+   :parameters
+   [{:name "steamid",
+     :type "uint64",
+     :optional true,
+     :description
+     "If specified, only returns details if the file is owned by the SteamID specified"}
+    {:name "ugcid",
+     :type "uint64",
+     :optional false,
+     :description "ID of UGC file to get info for"}
+    {:name "appid",
+     :type "uint32",
+     :optional false,
+     :description "appID of product"}]}))
 
 (def ugc-file-details ugc-file-details-v1)

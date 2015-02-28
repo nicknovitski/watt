@@ -1,23 +1,55 @@
-(ns watt.economy (:require [watt.core :refer [request]]))
+(ns watt.economy (:require [watt.core :refer [method->fn]]))
 
 (def
  asset-class-info-v1
- "Parameters:
-:appid (uint32) - Must be a steam economy app.
-:language (string) - The user's local language (optional)
-:class_count (uint32) - Number of classes requested. Must be at least one.
-:classid0 (uint64) - Class ID of the nth class.
-:instanceid0 (uint64) - Instance ID of the nth class. (optional)"
- (partial request "GET" "ISteamEconomy" "GetAssetClassInfo" 1))
+ (method->fn
+  "ISteamEconomy"
+  {:name "GetAssetClassInfo",
+   :version 1,
+   :httpmethod "GET",
+   :parameters
+   [{:name "appid",
+     :type "uint32",
+     :optional false,
+     :description "Must be a steam economy app."}
+    {:name "language",
+     :type "string",
+     :optional true,
+     :description "The user's local language"}
+    {:name "class_count",
+     :type "uint32",
+     :optional false,
+     :description "Number of classes requested. Must be at least one."}
+    {:name "classid0",
+     :type "uint64",
+     :optional false,
+     :description "Class ID of the nth class."}
+    {:name "instanceid0",
+     :type "uint64",
+     :optional true,
+     :description "Instance ID of the nth class."}]}))
 
 (def asset-class-info asset-class-info-v1)
 
 (def
  asset-prices-v1
- "Parameters:
-:appid (uint32) - Must be a steam economy app.
-:currency (string) - The currency to filter for (optional)
-:language (string) - The user's local language (optional)"
- (partial request "GET" "ISteamEconomy" "GetAssetPrices" 1))
+ (method->fn
+  "ISteamEconomy"
+  {:name "GetAssetPrices",
+   :version 1,
+   :httpmethod "GET",
+   :parameters
+   [{:name "appid",
+     :type "uint32",
+     :optional false,
+     :description "Must be a steam economy app."}
+    {:name "currency",
+     :type "string",
+     :optional true,
+     :description "The currency to filter for"}
+    {:name "language",
+     :type "string",
+     :optional true,
+     :description "The user's local language"}]}))
 
 (def asset-prices asset-prices-v1)

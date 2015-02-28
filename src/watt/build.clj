@@ -23,7 +23,7 @@
 
 (defn interface->ns [i]
   (list 'ns (symbol (str "watt." (clojurify (:name i))))
-        '(:require [watt.core :refer [request]])))
+        '(:require [watt.core :refer [method->fn]])))
 
 (defn- underscore [s] (string/replace s #"-" "_"))
 
@@ -52,23 +52,11 @@
       (map param->s ps)
       "Parameters:")))
 
-(defn- docstring [m]
-  (if (empty? (:parameters m))
-    (:description m)
-    (if (empty? (:description m))
-      (params->s (:parameters m))
-      (string/join
-        "\n\n"
-        [(:description m) (params->s (:parameters m))]))))
-
 (defn- method-name [m]
   (symbol (str (-> m :name clojurify) "-v" (:version m))))
 
 (defn- method->def [i m]
-  (let [body (list 'partial 'request (:httpmethod m) (:name i) (:name m) (:version m))]
-    (if-let [ds (docstring m)]
-      (list 'def (method-name m) ds body)
-      (list 'def (method-name m) body))))
+  (list 'def (method-name m) (list 'method->fn (:name i) m)))
 
 (defn- highest-version [mcoll]
   (apply (partial max-key :version) mcoll))

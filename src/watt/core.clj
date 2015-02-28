@@ -5,10 +5,14 @@
 
 (defn- version-string [version] (format "v%04d" version))
 
-(defn- path [interface method version]
-  (string/join
-    "/"
-    [interface method (version-string version)]))
+(defn- url [interface method version]
+  (let [host "http://api.steampowered.com"]
+    (string/join
+      "/"
+      [host
+       interface
+       method
+       (version-string version)])))
 
 (defn- form-encode [m]
   (codec/form-encode (into {} (remove (comp nil? second) m))))
@@ -16,17 +20,32 @@
 (defn- with-env-key [m]
   (merge {:key (System/getenv "STEAM_API_KEY")} m))
 
-(defn- uri [interface method version {:as q}]
-  (let [host "http://api.steampowered.com"]
-    (string/join
-      "/"
-      [host
-       (path interface method version)
-       (str "?" (form-encode (with-env-key q)))])))
+(defn- query [m]
+  (form-encode (with-env-key m)))
 
-(defn- method->fn [m] (case m "GET" http/get "POST" http/post))
+(defn- split-map [m ks]
+  (let [listed (select-keys m ks)]
+    (if (nil? m)
+      [listed {}]
+      [listed (apply (partial dissoc m) ks)])))
 
-(defn request [httpmethod i m v & {:as args}]
-  (http/request {:method (keyword (string/lower-case httpmethod))
-                 :url (uri i m v args)
-                 :as :json}))
+(defn- split-steam-and-http-params [m parameters]
+  (split-map m (map (comp keyword :name) parameters)))
+
+(defn- parameters->preconditions [parameters]
+  (hash-map :pre (vec (map #(list (keyword (:name %)) 'args) parameters))))
+
+(defn- without-nil-values [m]
+  (into {} (remove (comp nil? second) m)))
+
+(def query-params (comp without-nil-values with-env-key))
+
+(defn method->fn [i m]
+  (let [{n :name version :version httpmethod :httpmethod parameters :parameters} m]
+    (fn [& {:as args}]
+      (let [[steam-params request-args] (split-steam-and-http-params args parameters)
+            http-args {:method (keyword (string/lower-case httpmethod))
+                       :url (url i n version)
+                       :query-params (query-params steam-params)
+                       :as :json}]
+        (http/request (merge request-args http-args))))))

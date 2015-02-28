@@ -1,19 +1,39 @@
-(ns watt.tf-promos-620 (:require [watt.core :refer [request]]))
+(ns watt.tf-promos-620 (:require [watt.core :refer [method->fn]]))
 
 (def
  item-id-v1
- "Parameters:
-:steamid (uint64) - The Steam ID to fetch items for
-:PromoID (uint32) - The promo ID to grant an item for"
- (partial request "GET" "ITFPromos_620" "GetItemID" 1))
+ (method->fn
+  "ITFPromos_620"
+  {:name "GetItemID",
+   :version 1,
+   :httpmethod "GET",
+   :parameters
+   [{:name "steamid",
+     :type "uint64",
+     :optional false,
+     :description "The Steam ID to fetch items for"}
+    {:name "PromoID",
+     :type "uint32",
+     :optional false,
+     :description "The promo ID to grant an item for"}]}))
 
 (def item-id item-id-v1)
 
 (def
  grant-item-v1
- "Parameters:
-:steamid (uint64) - The Steam ID to fetch items for
-:PromoID (uint32) - The promo ID to grant an item for"
- (partial request "POST" "ITFPromos_620" "GrantItem" 1))
+ (method->fn
+  "ITFPromos_620"
+  {:name "GrantItem",
+   :version 1,
+   :httpmethod "POST",
+   :parameters
+   [{:name "steamid",
+     :type "uint64",
+     :optional false,
+     :description "The Steam ID to fetch items for"}
+    {:name "PromoID",
+     :type "uint32",
+     :optional false,
+     :description "The promo ID to grant an item for"}]}))
 
 (def grant-item grant-item-v1)

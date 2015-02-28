@@ -1,32 +1,53 @@
-(ns watt.dota2-fantasy-205790 (:require [watt.core :refer [request]]))
+(ns
+ watt.dota2-fantasy-205790
+ (:require [watt.core :refer [method->fn]]))
 
 (def
  fantasy-player-stats-v1
- "Parameters:
-:FantasyLeagueID (uint32) - The fantasy league ID
-:StartTime (uint32) - An optional filter for minimum timestamp (optional)
-:EndTime (uint32) - An optional filter for maximum timestamp (optional)
-:matchid (uint64) - An optional filter for a specific match (optional)
-:SeriesID (uint32) - An optional filter for a specific series (optional)
-:PlayerAccountID (uint32) - An optional filter for a specific player (optional)"
- (partial
-  request
-  "GET"
+ (method->fn
   "IDOTA2Fantasy_205790"
-  "GetFantasyPlayerStats"
-  1))
+  {:name "GetFantasyPlayerStats",
+   :version 1,
+   :httpmethod "GET",
+   :parameters
+   [{:name "FantasyLeagueID",
+     :type "uint32",
+     :optional false,
+     :description "The fantasy league ID"}
+    {:name "StartTime",
+     :type "uint32",
+     :optional true,
+     :description "An optional filter for minimum timestamp"}
+    {:name "EndTime",
+     :type "uint32",
+     :optional true,
+     :description "An optional filter for maximum timestamp"}
+    {:name "matchid",
+     :type "uint64",
+     :optional true,
+     :description "An optional filter for a specific match"}
+    {:name "SeriesID",
+     :type "uint32",
+     :optional true,
+     :description "An optional filter for a specific series"}
+    {:name "PlayerAccountID",
+     :type "uint32",
+     :optional true,
+     :description "An optional filter for a specific player"}]}))
 
 (def fantasy-player-stats fantasy-player-stats-v1)
 
 (def
  player-official-info-v1
- "Parameters:
-:accountid (uint32) - The account ID to look up"
- (partial
-  request
-  "GET"
+ (method->fn
   "IDOTA2Fantasy_205790"
-  "GetPlayerOfficialInfo"
-  1))
+  {:name "GetPlayerOfficialInfo",
+   :version 1,
+   :httpmethod "GET",
+   :parameters
+   [{:name "accountid",
+     :type "uint32",
+     :optional false,
+     :description "The account ID to look up"}]}))
 
 (def player-official-info player-official-info-v1)

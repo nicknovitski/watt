@@ -1,13 +1,15 @@
-(ns watt.pay-pal-payments-hub (:require [watt.core :refer [request]]))
+(ns
+ watt.pay-pal-payments-hub
+ (:require [watt.core :refer [method->fn]]))
 
 (def
  pay-pal-payments-hub-payment-notification-v1
- (partial
-  request
-  "POST"
+ (method->fn
   "ISteamPayPalPaymentsHub"
-  "PayPalPaymentsHubPaymentNotification"
-  1))
+  {:name "PayPalPaymentsHubPaymentNotification",
+   :version 1,
+   :httpmethod "POST",
+   :parameters []}))
 
 (def
  pay-pal-payments-hub-payment-notification
