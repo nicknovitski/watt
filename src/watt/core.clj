@@ -8,11 +8,11 @@
 (defn- url [interface method version]
   (let [host "http://api.steampowered.com"]
     (string/join
-      "/"
-      [host
-       interface
-       method
-       (version-string version)])))
+     "/"
+     [host
+      interface
+      method
+      (version-string version)])))
 
 (defn- form-encode [m]
   (codec/form-encode (into {} (remove (comp nil? second) m))))

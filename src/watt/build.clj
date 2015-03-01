@@ -32,25 +32,25 @@
 
 (defn- interfaces []
   (->
-    (json/read-str (slurp "resources/apilist.json") :key-fn keyword)
-    :apilist
-    :interfaces))
+   (json/read-str (slurp "resources/apilist.json") :key-fn keyword)
+   :apilist
+   :interfaces))
 
 (defn- param->s [p]
   (str
-    (keyword (:name p))
-    " ("
-    (:type p)
-    ")"
-    (if-not (empty? (:description p)) (str " - " (:description p)))
-    (if (:optional p) " (optional)")))
+   (keyword (:name p))
+   " ("
+   (:type p)
+   ")"
+   (if-not (empty? (:description p)) (str " - " (:description p)))
+   (if (:optional p) " (optional)")))
 
 (defn params->s [ps]
   (string/join
-    "\n"
-    (conj
-      (map param->s ps)
-      "Parameters:")))
+   "\n"
+   (conj
+    (map param->s ps)
+    "Parameters:")))
 
 (defn- method-name [m]
   (symbol (str (-> m :name clojurify) "-v" (:version m))))
@@ -63,23 +63,23 @@
 
 (defn interface->methods [i]
   (mapcat
-    (fn [method-group]
-      (let [vmax (highest-version method-group)]
-        (concat
-          (map (partial method->def i) method-group)
-          [(list 'def (-> vmax :name clojurify symbol) (method-name vmax))])))
-    (partition-by :name (:methods i))))
+   (fn [method-group]
+     (let [vmax (highest-version method-group)]
+       (concat
+        (map (partial method->def i) method-group)
+        [(list 'def (-> vmax :name clojurify symbol) (method-name vmax))])))
+   (partition-by :name (:methods i))))
 
 (defn- pprint-str [f] (with-out-str (pprint f)))
 
 (defn -main []
   (doseq [interface (interfaces)]
     (spit
-      (interface->path interface)
-      (string/join
-        "\n"
-        (map
-          pprint-str
-          (conj
-            (interface->methods interface)
-            (interface->ns interface)))))))
+     (interface->path interface)
+     (string/join
+      "\n"
+      (map
+       pprint-str
+       (conj
+        (interface->methods interface)
+        (interface->ns interface)))))))
