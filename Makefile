@@ -6,4 +6,4 @@ download :
 
 regen :
 	lein run
-	git grep -l '(?:^\s+".+)\\n(?:.+"$$)' | xargs sed -i 's/\\n/\n/g'
+	lein cljfmt fix
